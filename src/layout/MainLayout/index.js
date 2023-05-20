@@ -14,6 +14,9 @@ import Breadcrumbs from 'components/@extended/Breadcrumbs';
 
 // types
 import { openDrawer } from 'store/reducers/menu';
+import { ApiGet } from 'utils/ApiData';
+import { loginAction, logoutAction } from '../../store/reducers/auth';
+import { useNavigate } from 'react-router-dom';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -21,6 +24,7 @@ const MainLayout = () => {
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { drawerOpen } = useSelector((state) => state.menu);
 
@@ -43,6 +47,19 @@ const MainLayout = () => {
     if (open !== drawerOpen) setOpen(drawerOpen);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawerOpen]);
+
+  useEffect(() => {
+    ApiGet('auth')
+      .then((res) => {
+          console.log(res);
+          dispatch(loginAction())  
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(logoutAction())
+        navigate('login')
+      })
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
