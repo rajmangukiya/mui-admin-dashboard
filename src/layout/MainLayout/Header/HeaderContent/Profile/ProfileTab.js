@@ -7,16 +7,28 @@ import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 
 // assets
 import { EditOutlined, ProfileOutlined, LogoutOutlined, UserOutlined, WalletOutlined } from '@ant-design/icons';
+import AuthStorage from 'utils/AuthStorage';
+import { logoutAction } from 'store/reducers/auth';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 const ProfileTab = ({ handleLogout }) => {
   const theme = useTheme();
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+
+  const logout = async () => {
+    AuthStorage.deauthenticateUser();
+    dispatch(logoutAction());
+    navigate('/login')
+}
 
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
@@ -49,7 +61,7 @@ const ProfileTab = ({ handleLogout }) => {
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>
-        <ListItemText primary="Logout" />
+        <ListItemText onClick={logout} primary="Logout" />
       </ListItemButton>
     </List>
   );

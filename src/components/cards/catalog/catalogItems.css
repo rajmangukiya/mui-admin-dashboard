@@ -1,0 +1,39 @@
+.catalog-items-container {
+    width: 100%;
+    margin: 50px 10px 20px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.catalog-item {
+    width: 100%;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.catalog-item:hover {
+    background-color: rgb(246, 246, 246);
+}
+
+.catalog-item img {
+    width: 7%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.catalog-line {
+    width: 100%;
+    height: 1px;
+    background-color: rgb(213, 213, 213);
+}
+
+@media only screen and (max-width: 768px) {
+    .card-media {
+        width: 200px;
+        height: 300px;
+    }
+}

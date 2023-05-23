@@ -6,6 +6,9 @@ import MainLayout from 'layout/MainLayout';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
+const Catalog = Loadable(lazy(() => import('pages/catalog')));
+const Item = Loadable(lazy(() => import('pages/catalog/Item')));
+const Order = Loadable(lazy(() => import('pages/order')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
@@ -40,7 +43,20 @@ const MainRoutes = {
       ]
     },
     {
+      path: 'catalog',
+      element: <Catalog />
+    },
+    {
+      path: 'item',
+      element: <Item />
+    },
+    {
+      path: 'order',
+      element: <Order />
+    },
+    {
       path: 'sample-page',
+      
       element: <SamplePage />
     },
     {

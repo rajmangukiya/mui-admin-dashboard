@@ -59,7 +59,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'tracking_no',
+    id: 'trackingNo',
     align: 'left',
     disablePadding: false,
     label: 'Tracking No.'
@@ -71,25 +71,20 @@ const headCells = [
     label: 'Product Name'
   },
   {
-    id: 'city',
-    align: 'left',
-    disablePadding: true,
-    label: 'City'
-  },
-  {
-    id: 'total_order',
-    align: 'center',
+    id: 'fat',
+    align: 'right',
     disablePadding: false,
     label: 'Total Order'
   },
   {
-    id: 'delivery_status',
-    align: 'center',
+    id: 'carbs',
+    align: 'left',
     disablePadding: false,
-    label: 'Delivery Status'
+
+    label: 'Status'
   },
   {
-    id: 'total_amount',
+    id: 'protein',
     align: 'right',
     disablePadding: false,
     label: 'Total Amount'
@@ -152,7 +147,7 @@ const OrderStatus = ({ status }) => {
   }
 
   return (
-    <Stack direction="row" spacing={1} alignItems="center" className='d-flex justify-content-center'>
+    <Stack direction="row" spacing={1} alignItems="center">
       <Dot color={color} />
       <Typography>{title}</Typography>
     </Stack>
@@ -231,9 +226,9 @@ export default function OrderTable() {
                 >
                   <TableCell align="left">{row._id}</TableCell>
                   <TableCell align="left">{row.item.name}</TableCell>
-                  <TableCell align="left">{row.addressDetails.city}</TableCell>
+                  <TableCell align="center">{row.addressDetails.city}</TableCell>
                   <TableCell align="center">{row.orderCount ?? 1}</TableCell>
-                  <TableCell align="center">
+                  <TableCell align="left">
                     <OrderStatus status={row.status} />
                   </TableCell>
                   <TableCell align="right">

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
+import * as Yup from 'yup';
+import { Formik } from 'formik';
+import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
-// material-ui
 import {
   Button,
   Checkbox,
@@ -17,22 +20,24 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-
-// third party
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-
-// project import
+import AuthStorage from '../../../utils/AuthStorage';
+import { ApiPostNoAuth } from 'utils/ApiData';
+import { useNavigate } from 'react-router-dom';
 import FirebaseSocial from './FirebaseSocial';
 import AnimateButton from 'components/@extended/AnimateButton';
+import { loginAction } from '../../../store/reducers/auth';
+import STORAGEKEY from '../../../config/storageKey'
 
-// assets
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-
-// ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [checked, setChecked] = React.useState(false);
+  const [loginForm, setLoginForm] = React.useState({
+    email: '',
+    password: ''
+  })
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -43,14 +48,31 @@ const AuthLogin = () => {
     event.preventDefault();
   };
 
+  const handleFormChange = (value) => {
+    setLoginForm((prev) => {
+      return {
+        ...prev,
+        ...value
+      }
+    })
+  };
+
+  const login = async () => {
+      const res = await ApiPostNoAuth('auth/login', loginForm);
+      AuthStorage.setStorageJsonData(STORAGEKEY.token, res?.data?.token, true);
+      dispatch(loginAction())
+      navigate("/")
+  }
+
+  React.useEffect(() => {
+    console.log("loginForm", loginForm);
+  }, [loginForm])
+  
+
   return (
     <>
       <Formik
-        initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
-          submit: null
-        }}
+        initialValues={loginForm}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
@@ -66,7 +88,7 @@ const AuthLogin = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -78,7 +100,10 @@ const AuthLogin = () => {
                     value={values.email}
                     name="email"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleFormChange({email: e.target.value})
+                    }}
                     placeholder="Enter email address"
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
@@ -101,7 +126,10 @@ const AuthLogin = () => {
                     value={values.password}
                     name="password"
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleFormChange({password: e.target.value})
+                    }}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -151,7 +179,16 @@ const AuthLogin = () => {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Button 
+                    onClick={login} 
+                    disableElevation 
+                    disabled={!(touched.email) || errors.email || !(touched.password) || errors.password} 
+                    fullWidth 
+                    size="large" 
+                    type="submit" 
+                    variant="contained" 
+                    color="primary"
+                  >
                     Login
                   </Button>
                 </AnimateButton>

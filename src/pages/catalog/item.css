@@ -1,0 +1,13 @@
+.add-item-image-container {
+    height: 350px;
+    width: 31%;
+    position: relative;
+    margin-right: 2%;
+    margin-bottom: 20px;
+}
+
+.add-item-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

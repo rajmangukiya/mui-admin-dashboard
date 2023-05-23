@@ -1,0 +1,23 @@
+.order-image-container {
+    height: 150px;
+    display: flex;
+    align-items: center;
+}
+
+#price {
+    margin-left: auto;
+    letter-spacing: 1px;
+}
+
+.order-image-container img {
+    width: 100px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 2rem;
+}
+
+.order-line {
+    height: 1px;
+    background-color: rgb(213, 213, 213);
+}
