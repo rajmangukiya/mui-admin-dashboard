@@ -175,9 +175,12 @@ export default function OrderTable() {
   const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
   const fetchOrders = async () => {
-    const res = await ApiGet('order/getOrders')
-    // console.log('orderDetails', res.data);
-    setOrders([...(res.data)])
+    try {
+      const res = await ApiGet('order/getOrders')
+      setOrders([...(res.data)])
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const openOrderPage = (order) => () => {

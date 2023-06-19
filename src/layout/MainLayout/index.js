@@ -56,7 +56,7 @@ const MainLayout = () => {
       })
       .catch((err) => {
         console.log('auth failure', err);
-        navigate('login')
+        navigate('/login')
         dispatch(logoutAction())
       })
   }, []);
